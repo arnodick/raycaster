@@ -2,12 +2,6 @@ local function make(a)
 	a.spr=0
 	a.size=1
 	a.c=7
-	a.viewleftdir=0
-	a.viewrightdir=0
-	a.viewleftvecx=0
-	a.viewleftvecy=0
-	a.viewrightvecx=0
-	a.viewrightvecy=0
 	a.rays={}
 end
 
@@ -24,15 +18,23 @@ local function control(a,gs)
 	if love.keyboard.isDown("left") then
 		a.d=a.d-0.1
 	end
-	a.viewleftdir=a.d-(Camera.resolution/2)*math.pi
-	a.viewrightdir=a.d+(Camera.resolution/2)*math.pi
-	a.viewleftvecx=math.cos(a.viewleftdir)
-	a.viewleftvecy=math.sin(a.viewleftdir)
-	a.viewrightvecx=math.cos(a.viewrightdir)
-	a.viewrightvecy=math.sin(a.viewrightdir)
 	a.rays={}
-	for i=-Camera.resolution/2,Camera.resolution/2,0.1 do
-		table.insert(a.rays,a.d+i)
+	for i=-Camera.resolution/2,Camera.resolution/2,0.05 do
+		local ray={}
+		ray.d=a.d+i
+		for j=1,100,0.5 do
+			local x=math.floor(a.x+math.cos(ray.d)*j)
+			local y=math.floor(a.y+math.sin(ray.d)*j)
+			local cell=Map[y][x]
+			if cell then
+				if cell==1 then
+					ray.len=j
+					break
+				end
+			end
+			ray.len=100
+		end
+		table.insert(a.rays,ray)
 	end
 end
 
@@ -44,15 +46,15 @@ local function draw(a)
 	if DebugMode then
 		love.graphics.setColor(Palette[11])
 		love.graphics.line(a.x,a.y,a.x+a.vec[1]*10,a.y+a.vec[2]*10)
-		love.graphics.setColor(Palette[8])
-		love.graphics.line(a.x,a.y,a.x+a.viewleftvecx*100,a.y+a.viewleftvecy*100)
-		love.graphics.line(a.x,a.y,a.x+a.viewrightvecx*100,a.y+a.viewrightvecy*100)
-		for i=1,#a.rays do
-			local vecx=math.cos(a.rays[i])
-			local vecy=math.sin(a.rays[i])
-			love.graphics.line(a.x,a.y,a.x+vecx*100,a.y+vecy*100)
-		end
+
 	end
+		love.graphics.setColor(Palette[8])
+		for i=1,#a.rays do
+			local vecx=math.cos(a.rays[i].d)
+			local vecy=math.sin(a.rays[i].d)
+			local len=a.rays[i].len
+			love.graphics.line(a.x,a.y,a.x+vecx*len,a.y+vecy*len)
+		end
 end
 
 return

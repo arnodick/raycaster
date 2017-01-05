@@ -12,7 +12,7 @@ local function update()
 	table.insert(debuglist,"camx:"..Camera.x)
 	table.insert(debuglist,"camy:"..Camera.y)
 	for i=1,#Player.rays do
-		table.insert(debuglist,"ray "..i..": "..Player.rays[i])
+		table.insert(debuglist,"ray "..i..": "..Player.rays[i].d)
 	end
 	return debuglist
 end

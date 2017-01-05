@@ -4,7 +4,7 @@ local function make(s)
 		table.insert(m,{})
 		for x=1,s do
 			--table.insert(m[y],love.math.random(2)-1)
-			if y==1 then
+			if y==20 or x==20 or (x==40 and y<40) then
 				table.insert(m[y],1)
 			else
 				table.insert(m[y],0)
