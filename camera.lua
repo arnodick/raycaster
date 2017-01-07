@@ -4,7 +4,8 @@ local function make(x,y)
 	c.y=y
 	c.shake=0
 	c.hit=0
-	c.resolution=0.6
+	c.fov=math.pi*2
+	c.resolution=0.01
 	return c
 end
 

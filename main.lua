@@ -3,7 +3,7 @@ libraries.load()
 SFX = sfx.load()
 
 function love.load()
-	Game = game.make(8,8,200,200,1)
+	Game = game.make(8,8,640,480,1)
 end
 
 function love.keypressed(key,scancode,isrepeat)
@@ -61,7 +61,9 @@ function love.draw(dt)
 			for i,v in ipairs(Actors) do
 				actor.draw(v)
 			end
-			map.draw(Map)
+			if DebugMode then
+				map.draw(Map)
+			end
 		end
 		for i,v in ipairs(Menus) do
 			menu.draw(v)

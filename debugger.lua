@@ -11,6 +11,7 @@ local function update()
 	table.insert(debuglist,"player vel:"..Player.vel)
 	table.insert(debuglist,"camx:"..Camera.x)
 	table.insert(debuglist,"camy:"..Camera.y)
+	table.insert(debuglist,"ray count:"..#Player.rays)
 	for i=1,#Player.rays do
 		table.insert(debuglist,"ray "..i..": "..Player.rays[i].d)
 	end

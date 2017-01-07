@@ -35,12 +35,14 @@ end
 
 local function draw(a)
 	love.graphics.setColor(Palette[a.c])
-	if a.spr then
-		local anim=0
-		if a.anim then
-			anim=math.floor((Timer/a.anim.speed)%a.anim.frames)
+	if DebugMode then
+		if a.spr then
+			local anim=0
+			if a.anim then
+				anim=math.floor((Timer/a.anim.speed)%a.anim.frames)
+			end
+			love.graphics.draw(Spritesheet[a.size],Quads[a.size][a.spr+anim],a.x,a.y,a.d,1,1,(a.size*Game.tile.width)/2,(a.size*Game.tile.height)/2)
 		end
-		love.graphics.draw(Spritesheet[a.size],Quads[a.size][a.spr+anim],a.x,a.y,a.d,1,1,(a.size*Game.tile.width)/2,(a.size*Game.tile.height)/2)
 	end
 	if _G[Enums.actornames[a.t]]["draw"] then
 		_G[Enums.actornames[a.t]]["draw"](a)
