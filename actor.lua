@@ -25,8 +25,14 @@ end
 local function control(a,gs)
 	a.vec[1]=math.cos(a.d)
 	a.vec[2]=math.sin(a.d)
-	a.x=a.x+a.vec[1]*a.vel
-	a.y=a.y+a.vec[2]*a.vel
+	if Map[math.floor(a.y)][math.floor(a.x+a.vec[1]*a.vel*10)]~=1 then
+		a.x=a.x+a.vec[1]*a.vel
+	end
+	if Map[math.floor(a.y+a.vec[2]*a.vel*10)][math.floor(a.x)]~=1 then
+		a.y=a.y+a.vec[2]*a.vel
+	end
+	--a.x=a.x+a.vec[1]*a.vel
+	--a.y=a.y+a.vec[2]*a.vel
 
 	if _G[Enums.actornames[a.t]]["control"] then
 		_G[Enums.actornames[a.t]]["control"](a)

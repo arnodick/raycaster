@@ -31,10 +31,12 @@ local function control(a,gs)
 			if cell then
 				if cell==1 then
 					ray.len=j*math.cos(beta)
+					--ray.len=j
 					break
 				end
 			end
 			ray.len=100*math.cos(beta)
+			--ray.len=100
 		end
 		table.insert(a.rays,ray)
 	end
