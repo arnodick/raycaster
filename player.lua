@@ -23,8 +23,8 @@ local function control(a,gs)
 	for i=-Camera.fov/2,Camera.fov/2,Camera.resolution do
 		local ray={}
 		ray.d=a.d+i
-		local beta=ray.d-a.d
-		for j=1,100,0.1 do
+		local beta=(ray.d-a.d)
+		for j=0,100,0.01 do
 			local x=math.floor(a.x+math.cos(ray.d)*j)
 			local y=math.floor(a.y+math.sin(ray.d)*j)
 			local cell=Map[y][x]
