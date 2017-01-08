@@ -8,10 +8,9 @@ end
 local function control(a,gs)
 	if love.keyboard.isDown("up") then
 		a.vel=0.1
+	elseif love.keyboard.isDown("down") then
+		a.vel=-0.1
 	else
-		a.vel=0
-	end
-	if love.keyboard.isDown("down") then
 		a.vel=0
 	end
 	if love.keyboard.isDown("right") then
@@ -24,17 +23,18 @@ local function control(a,gs)
 	for i=-Camera.fov/2,Camera.fov/2,Camera.resolution do
 		local ray={}
 		ray.d=a.d+i
+		local beta=ray.d-a.d
 		for j=1,100,0.1 do
 			local x=math.floor(a.x+math.cos(ray.d)*j)
 			local y=math.floor(a.y+math.sin(ray.d)*j)
 			local cell=Map[y][x]
 			if cell then
 				if cell==1 then
-					ray.len=j
+					ray.len=j*math.cos(beta)
 					break
 				end
 			end
-			ray.len=100
+			ray.len=100*math.cos(beta)
 		end
 		table.insert(a.rays,ray)
 	end
