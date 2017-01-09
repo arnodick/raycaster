@@ -47,9 +47,20 @@ local function draw(a)
 			if a.anim then
 				anim=math.floor((Timer/a.anim.speed)%a.anim.frames)
 			end
-			love.graphics.draw(Spritesheet[a.size],Quads[a.size][a.spr+anim],a.x,a.y,a.d,1,1,(a.size*Game.tile.width)/2,(a.size*Game.tile.height)/2)
+			--love.graphics.draw(Spritesheet[a.size],Quads[a.size][a.spr+anim],a.x,a.y,a.d,1,1,(a.size*Game.tile.width)/2,(a.size*Game.tile.height)/2)
 		end
 	end
+	if a.spr then
+		local anim=0
+		local dir=vector.direction(vector.components(Player.x,Player.y,a.x,a.y))
+		local dist=vector.distance(Player.x,Player.y,a.x,a.y)
+		local deltadir=dir-(Player.d-Camera.fov/2)
+		--local x=deltadir*Game.width/2
+		--x=(math.cos(deltadir)*dist)*Game.width/2
+		x=(deltadir)*Game.width
+		love.graphics.draw(Spritesheet[a.size],Quads[a.size][a.spr+anim],x,Game.height/2,a.d,10/dist,10/dist,(a.size*Game.tile.width)/2,(a.size*Game.tile.height)/2)
+	end
+
 	if _G[Enums.actornames[a.t]]["draw"] then
 		_G[Enums.actornames[a.t]]["draw"](a)
 	end

@@ -1,5 +1,5 @@
 local function make(a)
-	a.spr=0
+	--a.spr=0
 	a.size=1
 	a.c=7
 	a.rays={}

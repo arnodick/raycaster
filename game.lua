@@ -46,6 +46,7 @@ local function changestate(s)
 		--Map=map.make(200)
 		Map = textfile.load("maps/ray.txt")
 		Player=actor.make(Enums.actors.player,0,2,2)
+		Monster=actor.make(Enums.actors.monster,0,20,20)
 	end
 	local settings={}
 	return settings
