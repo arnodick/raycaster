@@ -58,7 +58,7 @@ local function draw(a)
 		--local x=deltadir*Game.width/2
 		--x=(math.cos(deltadir)*dist)*Game.width/2
 		x=(deltadir)*Game.width
-		love.graphics.draw(Spritesheet[a.size],Quads[a.size][a.spr+anim],x,Game.height/2,a.d,10/dist,10/dist,(a.size*Game.tile.width)/2,(a.size*Game.tile.height)/2)
+		love.graphics.draw(Spritesheet[a.size],Quads[a.size][a.spr+anim],x,(Game.height/2)+(100/dist),a.d,100/dist,100/dist,(a.size*Game.tile.width)/2,(a.size*Game.tile.height)/2)
 	end
 
 	if _G[Enums.actornames[a.t]]["draw"] then

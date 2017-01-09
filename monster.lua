@@ -12,7 +12,6 @@ local function hitground(a)
 end
 
 local function draw(a)
-
 end
 
 return
