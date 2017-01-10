@@ -98,13 +98,24 @@ local function raycast(a,d,dist)
 	local ray={}
 	ray.d=d
 	local beta=(d-a.d)
-	for j=0,dist,0.05 do
+	for j=1,dist,0.5 do
 		local x=math.floor(a.x+math.cos(d)*j)
 		local y=math.floor(a.y+math.sin(d)*j)
 		local cell=Map[y][x]
 		if cell then
 			if cell==1 then
-				ray.len=j*math.cos(beta)
+				local xlast=a.x+math.cos(d)*(j-1)
+				local ylast=a.y+math.sin(d)*(j-1)
+				local len=0
+				if Map[math.floor(ylast)][math.floor(xlast+math.cos(d)*0.5)]==1 then
+					local diff=(x-xlast)*math.sin(d)
+					len=vector.distance(a.x,a.y,x,ylast+diff)
+				else
+					local diff=(y-ylast)*math.cos(d)
+					len=vector.distance(a.x,a.y,xlast+diff,y)
+				end
+				--ray.len=j*math.cos(beta)
+				ray.len=len*math.cos(beta)
 				return ray
 			end
 		end
