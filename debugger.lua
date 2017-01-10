@@ -6,6 +6,10 @@ local function update()
 	table.insert(debuglist,"player x:"..Player.x)
 	table.insert(debuglist,"player y:"..Player.y)
 	table.insert(debuglist,"player dir:"..Player.d)
+	if Monster then
+		table.insert(debuglist,"monster dir:"..vector.direction(vector.components(Player.x,Player.y,Monster.x,Monster.y)))
+		table.insert(debuglist,"monster delta dir:"..vector.direction(vector.components(Player.x,Player.y,Monster.x,Monster.y))-(Player.d-Camera.fov/2))
+	end
 	table.insert(debuglist,"player vx:"..Player.vec[1])
 	table.insert(debuglist,"player vy:"..Player.vec[2])
 	table.insert(debuglist,"player vel:"..Player.vel)
