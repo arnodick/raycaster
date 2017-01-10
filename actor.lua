@@ -53,7 +53,7 @@ local function draw(a)
 	if a.spr then
 		local dir=vector.direction(vector.components(Player.x,Player.y,a.x,a.y))
 		local dist=vector.distance(Player.x,Player.y,a.x,a.y)
-		local ray=actor.raycast(Player,dir,dist)
+		local ray=actor.raycast(Player.x,Player.y,dir,dist,0.1)
 		if ray.len>=dist*math.cos(dir-Player.d) then
 			local anim=0
 			if a.anim then
@@ -94,31 +94,24 @@ local function impulse(a,dir,vel,glitch)
 	return vector.direction(outx,outy), outvel
 end
 
-local function raycast(a,d,dist)
+local function raycast(x,y,d,dist,step)
 	local ray={}
 	ray.d=d
-	local beta=(d-a.d)
-	for j=0,dist,0.1 do
-		local x=math.floor(a.x+math.cos(d)*j)
-		local y=math.floor(a.y+math.sin(d)*j)
-		local cell=Map[y][x]
+	for j=0,dist,step do
+		local cellx=math.floor(x+math.cos(d)*j)
+		local celly=math.floor(y+math.sin(d)*j)
+		local cell=Map[celly][cellx]
 		if cell then
 			if cell==1 then
-				local xlast=a.x+math.cos(d)*(j-1)
-				local ylast=a.y+math.sin(d)*(j-1)
-				for i=0,0.5,0.01 do
-					local x2=math.floor(xlast+math.cos(d)*i)
-					local y2=math.floor(ylast+math.sin(d)*i)
-					local cell2=Map[y2][x2]
-					if cell2==1 then
-						ray.len=(j+i)*math.cos(beta)
-						return ray
-					end
-				end
+				local xlast=x+math.cos(d)*(j-1)
+				local ylast=y+math.sin(d)*(j-1)
+				local ray2=actor.raycast(xlast,ylast,d,step,step/10)
+				ray.len=j+ray2.len
+				return ray
 			end
 		end
 	end
-	ray.len=dist*math.cos(beta)
+	ray.len=dist
 	return ray
 end
 

@@ -21,7 +21,10 @@ local function control(a,gs)
 	end
 	a.rays={}
 	for i=-Camera.fov/2,Camera.fov/2,Camera.resolution do
-		table.insert(a.rays,actor.raycast(a,a.d+i,30))
+		local r=actor.raycast(a.x,a.y,a.d+i,30,0.1)
+		r.len=r.len*math.cos(i)
+		table.insert(a.rays,r)
+		--table.insert(a.rays,actor.raycast(a,a.d+i,30,0.1))
 	end
 end
 
