@@ -22,24 +22,7 @@ local function control(a,gs)
 	end
 	a.rays={}
 	for i=-Camera.fov/2,Camera.fov/2,Camera.resolution do
-		local ray={}
-		ray.d=a.d+i
-		local beta=(ray.d-a.d)
-		for j=0,100,0.01 do
-			local x=math.floor(a.x+math.cos(ray.d)*j)
-			local y=math.floor(a.y+math.sin(ray.d)*j)
-			local cell=Map[y][x]
-			if cell then
-				if cell==1 then
-					ray.len=j*math.cos(beta)
-					--ray.len=j
-					break
-				end
-			end
-			ray.len=100*math.cos(beta)
-			--ray.len=100
-		end
-		table.insert(a.rays,ray)
+		table.insert(a.rays,actor.raycast(a,a.d+i,100))
 	end
 end
 
@@ -56,8 +39,6 @@ local function draw(a)
 	if DebugMode then
 		love.graphics.setColor(Palette[11])
 		love.graphics.line(a.x,a.y,a.x+a.vec[1]*10,a.y+a.vec[2]*10)
-
-
 		love.graphics.setColor(Palette[8])
 		for i=1,#a.rays do
 			local vecx=math.cos(a.rays[i].d)

@@ -40,7 +40,7 @@ local function control(a,gs)
 end
 
 local function draw(a)
-	love.graphics.setColor(Palette[a.c])
+	--love.graphics.setColor(Palette[a.c])
 	if DebugMode then
 		if a.spr then
 			local anim=0
@@ -51,14 +51,21 @@ local function draw(a)
 		end
 	end
 	if a.spr then
-		local anim=0
 		local dir=vector.direction(vector.components(Player.x,Player.y,a.x,a.y))
 		local dist=vector.distance(Player.x,Player.y,a.x,a.y)
-		local deltadir=dir-(Player.d-Camera.fov/2)
-		--local x=deltadir*Game.width/2
-		--x=(math.cos(deltadir)*dist)*Game.width/2
-		x=(deltadir)*Game.width
-		love.graphics.draw(Spritesheet[a.size],Quads[a.size][a.spr+anim],x,(Game.height/2)+(100/dist),a.d,100/dist,100/dist,(a.size*Game.tile.width)/2,(a.size*Game.tile.height)/2)
+		local ray=actor.raycast(Player,dir,dist)
+		if ray.len>=dist*math.cos(dir-Player.d) then
+			local anim=0
+			if a.anim then
+				anim=math.floor((Timer/a.anim.speed)%a.anim.frames)
+			end
+			--love.graphics.setColor(255,0,77,255-dist*8)
+			--love.graphics.setColor(255,0,77,0+dist*8)--ghosties oouuuououuou
+			love.graphics.setColor(255-dist*8,0,77-dist*8,255)
+			local deltadir=dir-(Player.d-Camera.fov/2)
+			x=(deltadir)*Game.width
+			love.graphics.draw(Spritesheet[a.size],Quads[a.size][a.spr+anim],x,(Game.height/2)+(100/dist),a.d,50/dist,50/dist,(a.size*Game.tile.width)/2,(a.size*Game.tile.height)/2)
+		end
 	end
 
 	if _G[Enums.actornames[a.t]]["draw"] then
@@ -85,6 +92,25 @@ local function impulse(a,dir,vel,glitch)
 	local outvel=a.vel+vel
 
 	return vector.direction(outx,outy), outvel
+end
+
+local function raycast(a,d,dist)
+	local ray={}
+	ray.d=d
+	local beta=(d-a.d)
+	for j=0,dist,0.01 do
+		local x=math.floor(a.x+math.cos(d)*j)
+		local y=math.floor(a.y+math.sin(d)*j)
+		local cell=Map[y][x]
+		if cell then
+			if cell==1 then
+				ray.len=j*math.cos(beta)
+				return ray
+			end
+		end
+	end
+	ray.len=dist*math.cos(beta)
+	return ray
 end
 
 local function collision(a,enemy)
@@ -151,6 +177,7 @@ return
 	draw = draw,
 	makehitbox = makehitbox,
 	makeanim = makeanim,
+	raycast = raycast,
 	collision = collision,
 	damage = damage,
 	impulse = impulse,
