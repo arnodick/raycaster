@@ -17,12 +17,11 @@ local function control(a,gs)
 		a.d=math.clamp(a.d+0.05,0,math.pi*2,true)
 	end
 	if love.keyboard.isDown("left") then
-		--a.d=a.d-0.05
 		a.d=math.clamp(a.d-0.05,0,math.pi*2,true)
 	end
 	a.rays={}
 	for i=-Camera.fov/2,Camera.fov/2,Camera.resolution do
-		table.insert(a.rays,actor.raycast(a,a.d+i,100))
+		table.insert(a.rays,actor.raycast(a,a.d+i,30))
 	end
 end
 
