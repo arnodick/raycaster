@@ -97,7 +97,7 @@ end
 local function raycast(x,y,d,dist,step)
 	local ray={}
 	ray.d=d
-	for j=0,dist,step do
+	for j=1,dist,step do
 		local cellx=math.floor(x+math.cos(d)*j)
 		local celly=math.floor(y+math.sin(d)*j)
 		local cell=Map[celly][cellx]
