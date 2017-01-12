@@ -97,14 +97,14 @@ end
 local function raycast(x,y,d,dist,step)
 	local ray={}
 	ray.d=d
-	for j=1,dist,step do
+	for j=step,dist,step do
 		local cellx=math.floor(x+math.cos(d)*j)
 		local celly=math.floor(y+math.sin(d)*j)
 		local cell=Map[celly][cellx]
 		if cell then
 			if cell==1 then
-				local xlast=x+math.cos(d)*(j-1)
-				local ylast=y+math.sin(d)*(j-1)
+				local xlast=x+math.cos(d)*(j-step)
+				local ylast=y+math.sin(d)*(j-step)
 				local ray2=actor.raycast(xlast,ylast,d,step,step/10)
 				ray.len=j+ray2.len
 				return ray
