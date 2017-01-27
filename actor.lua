@@ -64,7 +64,7 @@ local function draw(a)
 			love.graphics.setColor(255-dist*8,0,77-dist*8,255)
 			local deltadir=dir-(Player.d-Camera.fov/2)
 			x=(deltadir)*Game.width
-			love.graphics.draw(Spritesheet[a.size],Quads[a.size][a.spr+anim],x,(Game.height/2)+(100/dist),a.d,50/dist,50/dist,(a.size*Game.tile.width)/2,(a.size*Game.tile.height)/2)
+			love.graphics.draw(Spritesheet[a.size],Quads[a.size][a.spr+anim],x,(Game.height/2)+(100/dist),a.d,25/dist,25/dist,(a.size*Game.tile.width)/2,(a.size*Game.tile.height)/2)
 		end
 	end
 

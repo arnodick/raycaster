@@ -14,10 +14,12 @@ local function control(a,gs)
 		a.vel=0
 	end
 	if love.keyboard.isDown("right") then
-		a.d=math.clamp(a.d+0.05,0,math.pi*2,true)
+		--a.d=math.clamp(a.d+0.05,0,math.pi*2,true)
+		a.d=math.clamp(a.d+0.05,-math.pi,math.pi,true)
 	end
 	if love.keyboard.isDown("left") then
-		a.d=math.clamp(a.d-0.05,0,math.pi*2,true)
+		--a.d=math.clamp(a.d-0.05,0,math.pi*2,true)
+		a.d=math.clamp(a.d-0.05,-math.pi,math.pi,true)
 	end
 	a.rays={}
 	for i=-Camera.fov/2,Camera.fov/2,Camera.resolution do
