@@ -14,20 +14,28 @@ local function control(a,gs)
 		a.vel=0
 	end
 	if love.keyboard.isDown("right") then
-		--a.d=math.clamp(a.d+0.05,0,math.pi*2,true)
 		a.d=math.clamp(a.d+0.05,-math.pi,math.pi,true)
 	end
 	if love.keyboard.isDown("left") then
-		--a.d=math.clamp(a.d-0.05,0,math.pi*2,true)
 		a.d=math.clamp(a.d-0.05,-math.pi,math.pi,true)
 	end
 	a.rays={}
+	local x=1
 	for i=-Camera.fov/2,Camera.fov/2,Camera.resolution do
 		local r=actor.raycast(a.x,a.y,a.d+i,30,0.1)
 		r.len=r.len*math.cos(i)
+		r.x=x
+		x=x+1
 		table.insert(a.rays,r)
-		--table.insert(a.rays,actor.raycast(a,a.d+i,30,0.1))
 	end
+	local function raysort(a,b)
+		if a.len<b.len then
+			return true
+		else
+			return false
+		end
+	end
+	table.sort(a.rays, raysort)
 end
 
 local function hitground(a)
@@ -35,11 +43,22 @@ local function hitground(a)
 end
 
 local function draw(a)
+--[[
+	for i=1,math.floor(Raycount) do
+		local columnwidth=Game.width/#a.rays
+		local v=a.rays[i]
+		love.graphics.setColor(255,255,255,255-v.len*8)
+		--love.graphics.rectangle("fill",(i-1)*columnwidth,(Game.height/2)-(200/v.len),columnwidth,400/v.len)
+		love.graphics.rectangle("fill",(v.x-1)*columnwidth,(Game.height/2)-(200/v.len),columnwidth,400/v.len)
+	end
+--]]
+
 	for i,v in ipairs(a.rays) do
 		local columnwidth=Game.width/#a.rays
 		love.graphics.setColor(255,255,255,255-v.len*8)
-		love.graphics.rectangle("fill",(i-1)*columnwidth,(Game.height/2)-(200/v.len),columnwidth,400/v.len)
+		love.graphics.rectangle("fill",(v.x-1)*columnwidth,(Game.height/2)-(200/v.len),columnwidth,400/v.len)
 	end
+
 	if DebugMode then
 		love.graphics.setColor(Palette[11])
 		love.graphics.line(a.x,a.y,a.x+a.vec[1]*10,a.y+a.vec[2]*10)

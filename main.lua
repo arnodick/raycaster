@@ -4,6 +4,7 @@ SFX = sfx.load()
 
 function love.load()
 	Game = game.make(8,8,320,240,1)
+	Raycount=1
 end
 
 function love.keypressed(key,scancode,isrepeat)
@@ -49,7 +50,7 @@ function love.update(dt)
 			table.remove(Actors,i)
 		end
 	end
-
+	Raycount =  math.clamp(Raycount + 0.1,1,#Player.rays,true)
 	Timer = Timer + timerspeed
 end
 
