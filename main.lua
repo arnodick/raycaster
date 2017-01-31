@@ -4,7 +4,12 @@ SFX = sfx.load()
 
 function love.load()
 	Game = game.make(8,8,320,240,1)
-	Raycount=1
+	Drawdist=30
+	Enemies={}
+	for i=1,Drawdist do
+		table.insert(Enemies,{})
+	end
+	--Raycount=1
 end
 
 function love.keypressed(key,scancode,isrepeat)
@@ -29,7 +34,7 @@ function love.update(dt)
 	if State == Enums.states.game then
 		if Pause <= 0 then
 			for i,v in ipairs(Actors) do
-				actor.control(v,gs)
+				actor.control(v,gs,i)
 			end
 			camera.control(Camera,Player)
 		else
@@ -50,7 +55,7 @@ function love.update(dt)
 			table.remove(Actors,i)
 		end
 	end
-	Raycount =  math.clamp(Raycount + 0.1,1,#Player.rays,true)
+	--Raycount =  math.clamp(Raycount + 0.1,1,#Player.rays,true)
 	Timer = Timer + timerspeed
 end
 
@@ -59,9 +64,12 @@ function love.draw(dt)
 		love.graphics.clear() --cleans that messy ol canvas all up, makes it all fresh and new and good you know
 		love.graphics.translate(-Camera.x+love.math.random(Camera.shake/2),-Camera.y)
 		if State == Enums.states.game then
+			actor.draw(Player)
+			--[[
 			for i,v in ipairs(Actors) do
-				actor.draw(v)
+				actor.draw(v,i)
 			end
+			--]]
 			if DebugMode then
 				map.draw(Map)
 			end

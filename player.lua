@@ -22,7 +22,7 @@ local function control(a,gs)
 	a.rays={}
 	local x=1
 	for i=-Camera.fov/2,Camera.fov/2,Camera.resolution do
-		local r=actor.raycast(a.x,a.y,a.d+i,30,0.1)
+		local r=actor.raycast(a.x,a.y,a.d+i,Drawdist,0.1)
 		r.len=r.len*math.cos(i)
 		r.x=x
 		x=x+1
@@ -53,11 +53,25 @@ local function draw(a)
 	end
 --]]
 
+	for i=#a.rays,1,-1 do
+		v=a.rays[i]
+		local columnwidth=Game.width/#a.rays
+		if math.ceil(v.len)<=30 then
+			if #Enemies[math.ceil(v.len)]>0 then
+				local index=Enemies[math.ceil(v.len)][1]
+				actor.draw(index)
+			end
+		end
+		love.graphics.setColor(255,255,255,255-v.len*8)
+		love.graphics.rectangle("fill",(v.x-1)*columnwidth,(Game.height/2)-(200/v.len),columnwidth,400/v.len)
+	end
+--[[
 	for i,v in ipairs(a.rays) do
 		local columnwidth=Game.width/#a.rays
 		love.graphics.setColor(255,255,255,255-v.len*8)
 		love.graphics.rectangle("fill",(v.x-1)*columnwidth,(Game.height/2)-(200/v.len),columnwidth,400/v.len)
 	end
+--]]
 
 	if DebugMode then
 		love.graphics.setColor(Palette[11])

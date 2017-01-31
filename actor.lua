@@ -22,7 +22,7 @@ local function make(t,st,x,y,c,d,vel,...)
 	return a
 end
 
-local function control(a,gs)
+local function control(a,gs,index)
 	a.vec[1]=math.cos(a.d)
 	a.vec[2]=math.sin(a.d)
 	if Map[math.floor(a.y)][math.floor(a.x+a.vec[1]*a.vel*10)]~=1 then
@@ -33,6 +33,13 @@ local function control(a,gs)
 	end
 	--a.x=a.x+a.vec[1]*a.vel
 	--a.y=a.y+a.vec[2]*a.vel
+
+	if a.spr then
+		local dist=math.floor(vector.distance(Player.x,Player.y,a.x,a.y))
+		if dist<=Drawdist then
+			table.insert(Enemies[dist],a)
+		end
+	end
 
 	if _G[Enums.actornames[a.t]]["control"] then
 		_G[Enums.actornames[a.t]]["control"](a)
@@ -50,11 +57,13 @@ local function draw(a)
 			--love.graphics.draw(Spritesheet[a.size],Quads[a.size][a.spr+anim],a.x,a.y,a.d,1,1,(a.size*Game.tile.width)/2,(a.size*Game.tile.height)/2)
 		end
 	end
+
+---[[
 	if a.spr then
 		local dir=vector.direction(vector.components(Player.x,Player.y,a.x,a.y))
 		local dist=vector.distance(Player.x,Player.y,a.x,a.y)
 		local ray=actor.raycast(Player.x,Player.y,dir,dist,0.1)
-		if ray.len>=dist*math.cos(dir-Player.d) then
+		--if ray.len>=dist*math.cos(dir-Player.d) then
 			local anim=0
 			if a.anim then
 				anim=math.floor((Timer/a.anim.speed)%a.anim.frames)
@@ -65,8 +74,9 @@ local function draw(a)
 			local deltadir=dir-(Player.d-Camera.fov/2)
 			x=(deltadir)*Game.width
 			love.graphics.draw(Spritesheet[a.size],Quads[a.size][a.spr+anim],x,(Game.height/2)+(100/dist),a.d,25/dist,25/dist,(a.size*Game.tile.width)/2,(a.size*Game.tile.height)/2)
-		end
+		--end
 	end
+--]]
 
 	if _G[Enums.actornames[a.t]]["draw"] then
 		_G[Enums.actornames[a.t]]["draw"](a)
